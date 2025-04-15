@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: bankingdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  ibmmq:
+    image: ibmcom/mq:latest
+    container_name: mq
+    ports:
+      - "1414:1414"
+      - "9443:9443"
+    environment:
+      - LICENSE=accept
+      - MQ_QMGR_NAME=QM1
+      - MQ_APP_PASSWORD=passw0rd
+      - MQ_ENABLE_METRICS=false
+    volumes:
+      - ./init-mq.sh:/init-mq.sh  # on monte le script dans le conteneur
+      - mqdata:/mnt/mqm
+    command: ["/bin/bash", "-c", "/init-mq.sh"]
+    healthcheck:
+      test: ["CMD", "mqping", "QM1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    depends_on:
+      - postgres
+      - ibmmq
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bankingdb
+      IBM_MQ_CONNNAME: ibmmq(1414)
+    ports:
+      - "8082:8082"
+
+volumes:
+  postgres_data:
+  mqdata:

@@ -1,0 +1,67 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bankingdb
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  jms:
+    pub-sub-domain: false
+
+ibm:
+  mq:
+    queueManager: QM1
+    channel: DEV.APP.SVRCONN
+    connName: localhost(1414)
+    queue: PAYMENT.INPUT.QUEUE
+    user: ""
+    password: ""
+    pool:
+      enabled: true
+      maxConnections: 10
+    tempModel: DEV.APP.MODEL.QUEUE
+
+app:
+  batch:
+    size: 500
+    delay: 2000
+
+logging:
+  level:
+    root: INFO
+    com.example: DEBUG
+    org.hibernate.SQL: DEBUG
+    com.ibm.mq: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  health:
+    db:
+      enabled: true
+    jms:
+      enabled: true
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+server:
+  port: 8090

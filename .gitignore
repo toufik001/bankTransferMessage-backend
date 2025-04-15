@@ -1,0 +1,25 @@
+.vscode/
+# Ignorer les fichiers compilés et temporaires Java
+target/
+*.log
+*.class
+
+# Ignorer les fichiers système
+.DS_Store
+Thumbs.db
+
+# IntelliJ / Eclipse / VS Code
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+.project
+.classpath
+.settings/
+
+# Fichiers de test ou de build
+test-output/
+build/
+out/
