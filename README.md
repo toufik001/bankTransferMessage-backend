@@ -19,8 +19,8 @@
 
 1. **Cloner le dépôt et se positionner dans le dossier du projet**
    ```bash
-   git clone [votre-repo]
-   cd [nom-du-projet]
+   git clone (https://github.com/toufik001/bankTransferMessage-backend.git)
+   cd bankTransferMessage-backend/
    ```
 
 2. **Démarrer les services**
